@@ -2,8 +2,7 @@ import numpy as np
 import pdb
 from oct2py import octave
 from numpy import *
-#from createSampleAndDrawTwoArms_py import *
-from createSampleStepsTwoArms_py import *
+from get_samples import *
 import scipy.io as sio
 from numpy.linalg import inv
 from numpy.linalg import norm
@@ -270,7 +269,8 @@ def GrouPS(*args,**kwargs):
     tau = np.load('tau.npy')
     alpha = np.load('alpha.npy')
     '''
-    createSampleStepsTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
+
+    get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
     
     #__,__,reward_plot[0][0],__= octave.createSampleAndDrawTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,nout=4)
     while check_if_converged:
@@ -283,7 +283,7 @@ def GrouPS(*args,**kwargs):
             Realization=np.empty([sample_size,1],dtype=object)
             Z_temp=np.empty([sample_size,1],dtype=object)
             for r in range(0,sample_size):
-                Actions,Basisfunctions,Reward,Zvals= createSampleStepsTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,Time,nout=4)
+                Actions,Basisfunctions,Reward,Zvals= get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,nout=4)
                 Realization[r][0] = {'Actions':Actions, 'Basis':Basisfunctions,'Reward':Reward}
                 Z_temp[r][0]=np.empty([Time,1],dtype=object)
                 
@@ -406,7 +406,7 @@ def GrouPS(*args,**kwargs):
         Iterations_number=Iterations_number + 1
         check_if_converged=Iterations_number < max_iterations
         
-        
+        '''
         np.save('M.npy',M)
         np.save('W.npy',W)
         np.save('tau.npy',tau)
@@ -420,12 +420,9 @@ def GrouPS(*args,**kwargs):
             np.save('./'+str(Iterations_number)+'/tau.npy',tau)
             np.save('./'+str(Iterations_number)+'/alpha.npy',alpha)
             np.save('./'+str(Iterations_number)+'/rewardOverTime.npy',M)
-            
-        #p.disconnect()
-        #p = reconnect_simulator()
-        createSampleStepsTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
-        #__,__,rewTmp,__= createSampleAndDrawTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,nout=4)
-        #reward_plot[0][Iterations_number-1]=rewTmp
+        '''    
+        get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
+
         
         print('Iteration :',Iterations_number)
     
@@ -436,8 +433,10 @@ if __name__ == '__main__':
     
     octave.eval('randn("seed", 10)', verbose=True)
     M,W,tau,alpha,rewardOverTime=GrouPS()
+    '''
     np.save('M.npy',M)
     np.save('W.npy',W)
     np.save('tau.npy',tau)
     np.save('alpha.npy',alpha)
     np.save('rewardOverTime.npy',M)
+    '''

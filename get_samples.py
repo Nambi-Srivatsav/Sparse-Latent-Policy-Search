@@ -2,7 +2,6 @@ import pdb
 from oct2py import octave
 from numpy import *
 import numpy as np
-#from calcEndeffektor_py import *
 from numpy.linalg import norm
 from numpy.linalg import inv
 
@@ -15,24 +14,10 @@ p=None
 
     
 
-def createSampleStepsTwoArms(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,rendering=0,*args,**kwargs):
+def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,rendering=0,*args,**kwargs):
 
     DoF=sum(DimPerGroup)
-    '''
-    if DoF != 12:
-        warning('Experiment is designed for 12 DoF. The number of DoF is not equal 12. Possible error!')
-    
-    if DoF < 7:
-        error('Experiment requires at least 7 DoF.')
-    '''
-    nmbrOfGroups=DimPerGroup.shape[0]
-    
-
-    #BasisDim = 11
-    #mat_contents = sio.loadmat('octave_a.mat')
-    #Basisfunctions = mat_contents['Basisfunctions']
-    #Basisfunctions = np.load('Bf.npy')
-    #Basisfunctions=Basisfunctions / np.tile(np.sum(Basisfunctions,axis=0),(BasisDim,1))
+    number_of_groups=DimPerGroup.shape[0]    
     
     octave.eval("Time ="+str(Time)+";")
     octave.eval("means = (-3):3:(Time+3);")
@@ -45,13 +30,12 @@ def createSampleStepsTwoArms(W=None,M=None,tau=None,Latent=None,DimPerGroup=None
     BasisDim = octave.pull('BasisDim')
     
     Z=octave.randn(Latent,BasisDim)
-    #Z=np.random.randn(Latent,BasisDim)
     Actions=np.zeros([DoF,Time])
     
     reward=np.zeros([1,Time])
      
     for t in arange(0,Time).reshape(-1):
-        for m in arange(0,nmbrOfGroups).reshape(-1):
+        for m in arange(0,number_of_groups).reshape(-1):
             
             if(m==0): 
                 startDim = 0
@@ -59,8 +43,6 @@ def createSampleStepsTwoArms(W=None,M=None,tau=None,Latent=None,DimPerGroup=None
                 startDim = 7
             
             xx = octave.eval('normrnd(0,'+str(octave.inv(tau[m][0]) + 2)+','+str(DimPerGroup[m])+','+str(BasisDim)+');')
-            #xc = inv(np.array(tau[m][0]).reshape(1,-1))[0][0] + 2
-            #xx = np.random.normal(0,xc,(DimPerGroup[m],BasisDim))
             
             Actions[startDim:(startDim + DimPerGroup[m]),t]=dot(dot(W[m][0],Z),Basisfunctions[:,t]) + dot(M[m][0],Basisfunctions[:,t]) + dot(xx,Basisfunctions[:,t])
         
