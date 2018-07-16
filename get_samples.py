@@ -10,10 +10,10 @@ from datetime import datetime
 import socket
     
 
-def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,rendering=0,*args,**kwargs):
+def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Time=None,rendering=0,*args,**kwargs):
 
-    DoF=sum(DimPerGroup)
-    number_of_groups=DimPerGroup.shape[0]    
+    DoF=sum(dimensions_per_group)
+    number_of_groups=dimensions_per_group.shape[0]    
     
     means = np.arange(-3,Time+3,3)
     BasisDim = len(means)
@@ -40,11 +40,11 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
     for t in arange(0,Time).reshape(-1):
         for m in arange(0,number_of_groups).reshape(-1):
             
-            startDim = sum(DimPerGroup[:m])
-            xx = scipy.stats.norm.rvs(0, inv([[tau[m][0]]])[0][0] + 2, (DimPerGroup[m],BasisDim))
+            startDim = sum(dimensions_per_group[:m])
+            xx = scipy.stats.norm.rvs(0, inv([[tau[m][0]]])[0][0] + 2, (dimensions_per_group[m],BasisDim))
             xx = xx/2
             time.sleep(0.05)
-            Actions[startDim:(startDim + DimPerGroup[m]),t]=dot(dot(W[m][0],Z),Basisfunctions[:,t]) + dot(M[m][0],Basisfunctions[:,t]) + dot(xx,Basisfunctions[:,t])
+            Actions[startDim:(startDim + dimensions_per_group[m]),t]=dot(dot(W[m][0],Z),Basisfunctions[:,t]) + dot(M[m][0],Basisfunctions[:,t]) + dot(xx,Basisfunctions[:,t])
         
         
         CurrentAngle=Actions[:,t]
