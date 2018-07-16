@@ -1,5 +1,4 @@
 import pdb
-from oct2py import octave
 from numpy import *
 import numpy as np
 from numpy.linalg import norm
@@ -33,7 +32,7 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
     sum_bafu = np.repeat(sum_bafu,len(means),0)
     Basisfunctions = np.divide(bafu,sum_bafu)
     
-    Z=octave.randn(Latent,BasisDim)
+    Z=np.random.randn(Latent,BasisDim)
     Actions=np.zeros([DoF,Time])
     
     reward=np.zeros([1,Time])
@@ -42,8 +41,9 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
         for m in arange(0,number_of_groups).reshape(-1):
             
             startDim = sum(DimPerGroup[:m])
-            xx = octave.eval('normrnd(0,'+str(octave.inv(tau[m][0]) + 2)+','+str(DimPerGroup[m])+','+str(BasisDim)+');')
-            
+            xx = scipy.stats.norm.rvs(0, inv([[tau[m][0]]])[0][0] + 2, (DimPerGroup[m],BasisDim))
+            xx = xx/2
+            time.sleep(0.05)
             Actions[startDim:(startDim + DimPerGroup[m]),t]=dot(dot(W[m][0],Z),Basisfunctions[:,t]) + dot(M[m][0],Basisfunctions[:,t]) + dot(xx,Basisfunctions[:,t])
         
         

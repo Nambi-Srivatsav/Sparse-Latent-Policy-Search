@@ -1,6 +1,5 @@
 import numpy as np
 import pdb
-from oct2py import octave
 from numpy import *
 from get_samples import *
 import scipy.io as sio
@@ -231,7 +230,7 @@ def GrouPS(*args,**kwargs):
     initialM = np.empty([number_of_groups,1],dtype=object)
     
     for m in range(0,number_of_groups):
-        W[m][0]=octave.randn(dimensions_per_group[m],latent_dimension_size)
+        W[m][0] = np.random.randn(dimensions_per_group[m],latent_dimension_size)
         tau[m][0]=initial_Tau
         alpha[m]=initial_Alpha
 
@@ -385,7 +384,7 @@ def GrouPS(*args,**kwargs):
         Iterations_number=Iterations_number + 1
         check_if_converged=Iterations_number < max_iterations
         
-        '''
+        
         np.save('M.npy',M)
         np.save('W.npy',W)
         np.save('tau.npy',tau)
@@ -399,10 +398,9 @@ def GrouPS(*args,**kwargs):
             np.save('./'+str(Iterations_number)+'/tau.npy',tau)
             np.save('./'+str(Iterations_number)+'/alpha.npy',alpha)
             np.save('./'+str(Iterations_number)+'/rewardOverTime.npy',M)
-        '''    
+            
         get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
 
-        
         print('Iteration :',Iterations_number)
     
     rewardOverTime=np.copy(reward_plot)
@@ -411,6 +409,7 @@ def GrouPS(*args,**kwargs):
 if __name__ == '__main__':
     
     octave.eval('randn("seed", 10)', verbose=True)
+    np.random.seed(10)
     M,W,tau,alpha,rewardOverTime=GrouPS()
     '''
     np.save('M.npy',M)
