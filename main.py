@@ -38,10 +38,7 @@ def update_M_Covariance(Best_samples_indices,Realization,M_temp,tau_temp,orginia
 def update_M_Mean(Best_samples_indices,Realization,M_temp,M,W_temp,Z_temp,tau_temp,orginial_feature_dimension_size,number_of_groups,sigma2_M,Time,sum_of_rewards,dimensions_per_group):
     
     for m in range(0,number_of_groups):
-        if(m==0): 
-            startDim = 0
-        if(m==1):
-            startDim = 7
+        startDim = sum(dimensions_per_group[:m])
 
         for j in range(0,dimensions_per_group[m]):
             mean=np.zeros([orginial_feature_dimension_size,1])
@@ -91,10 +88,7 @@ def update_W_Covariance(Best_samples_indices,Realization,M_temp,W_temp,Z_temp,al
 def update_W_Mean(Best_samples_indices,Realization,M_temp,W_temp,Z_temp,tau_temp,latent_dimension_size,number_of_groups,Time,sum_of_rewards,dimensions_per_group):
     
     for m in range(0,number_of_groups):
-        if(m==0): 
-            startDim = 0
-        if(m==1):
-            startDim = 7
+        startDim = sum(dimensions_per_group[:m])
 
         for j in range(0,dimensions_per_group[m]):
             mean=np.zeros([latent_dimension_size,1])
@@ -142,8 +136,8 @@ def update_Z_Mean_and_Covariance(Best_samples_indices,Realization,M_temp,W_temp,
                 mean=np.zeros([latent_dimension_size,1])
                 for m in range(0,number_of_groups):
                     #dimmm = np.array([0,4,6,10,12])
-                    dimmm = np.array([0,7])
-                    aaa = Action[(dimmm[m]):(dimmm[m] + dimensions_per_group[m] ),t]
+                    #dimmm = np.array([0,7])
+                    aaa = Action[(sum(dimensions_per_group[:m])):(sum(dimensions_per_group[:m])+ dimensions_per_group[m] ),t]
                     aaa2 = ( aaa - np.dot(M_static_mean[m][0],Basis[:,t]))
                     aaa3 = (np.dot(W_static_mean[m][0].T,aaa2)) / (np.dot(Basis[:,t].T,Basis[:,t]))
                     mean=mean + np.dot(aaa3.reshape(-1,1),(tau_temp[m][0]['A'] / tau_temp[m][0]['B']))
@@ -168,10 +162,7 @@ def update_tau(Best_samples_indices,Realization,M_temp,W_temp,Z_temp,tau_temp,or
             reward=Realization[r][0]['Reward'][0]
             basis=Realization[r][0]['Basis']
             actions=Realization[r][0]['Actions']
-            if(m==0): 
-                startDim = 0
-            if(m==1):
-                startDim = 7
+            startDim = sum(dimensions_per_group[:m])
 
             dims_start=startDim
             for t in range(0,Time):
@@ -253,17 +244,6 @@ def GrouPS(*args,**kwargs):
     M = np.copy(initialM)
     
     '''
-    octave.eval('load("saved_from_octave.mat","M","W","tau","alpha")')
-    
-    M_np = octave.pull('M') 
-    W_np = octave.pull('W') 
-    tau_np = octave.pull('tau') 
-    
-    M = M_np.reshape(-1,1)
-    W = W_np.reshape(-1,1)
-    tau = tau_np.reshape(-1,1)
-    '''
-    '''
     M = np.load('M.npy')
     W = np.load('W.npy')
     tau = np.load('tau.npy')
@@ -272,7 +252,6 @@ def GrouPS(*args,**kwargs):
 
     get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
     
-    #__,__,reward_plot[0][0],__= octave.createSampleAndDrawTwoArms(W,M,tau,latent_dimension_size,dimensions_per_group,nout=4)
     while check_if_converged:
         check_if_converged2=True
         sum_of_rewards=0

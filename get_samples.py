@@ -4,14 +4,11 @@ from numpy import *
 import numpy as np
 from numpy.linalg import norm
 from numpy.linalg import inv
-
+import scipy.stats
 import time
 import math
 from datetime import datetime
 import socket
-
-p=None
-
     
 
 def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,rendering=0,*args,**kwargs):
@@ -19,15 +16,22 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
     DoF=sum(DimPerGroup)
     number_of_groups=DimPerGroup.shape[0]    
     
-    octave.eval("Time ="+str(Time)+";")
-    octave.eval("means = (-3):3:(Time+3);")
-    octave.eval("BasisDim = length(means);")
-    octave.eval("variance = 3;")
-    octave.eval("featureFun = @(t) cell2mat(arrayfun(@(t_i) normpdf(t_i,means,variance)',t,'UniformOutput',0));")
-    octave.eval("Basisfunctions = featureFun(1:Time);")
-    octave.eval("Basisfunctions = Basisfunctions ./ repmat(sum(Basisfunctions),BasisDim,1);")
-    Basisfunctions = octave.pull('Basisfunctions')
-    BasisDim = octave.pull('BasisDim')
+    means = np.arange(-3,Time+3,3)
+    BasisDim = len(means)
+    variance = 3
+    bafu = scipy.stats.norm.pdf(1,means,variance)
+    bafu = bafu.reshape(-1,1)
+    
+    for i in range(1,Time):
+        function_i = scipy.stats.norm.pdf(i+1,means,variance)
+        function_i = function_i.reshape(-1,1)
+        bafu = np.concatenate((bafu,function_i),1)
+    
+    
+    sum_bafu = np.sum(bafu,0)
+    sum_bafu = sum_bafu.reshape(1,-1)
+    sum_bafu = np.repeat(sum_bafu,len(means),0)
+    Basisfunctions = np.divide(bafu,sum_bafu)
     
     Z=octave.randn(Latent,BasisDim)
     Actions=np.zeros([DoF,Time])
@@ -37,11 +41,7 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
     for t in arange(0,Time).reshape(-1):
         for m in arange(0,number_of_groups).reshape(-1):
             
-            if(m==0): 
-                startDim = 0
-            if(m==1):
-                startDim = 7
-            
+            startDim = sum(DimPerGroup[:m])
             xx = octave.eval('normrnd(0,'+str(octave.inv(tau[m][0]) + 2)+','+str(DimPerGroup[m])+','+str(BasisDim)+');')
             
             Actions[startDim:(startDim + DimPerGroup[m]),t]=dot(dot(W[m][0],Z),Basisfunctions[:,t]) + dot(M[m][0],Basisfunctions[:,t]) + dot(xx,Basisfunctions[:,t])
@@ -122,12 +122,12 @@ def get_samples(W=None,M=None,tau=None,Latent=None,DimPerGroup=None,Time=None,re
             print("You closed")
             pdb.set_trace()
 
-        expected_position = [0,115,600]
+        expected_position = [0,142,450]
         actual_position = [0,y_received,height_received]
         expected_position = np.array(expected_position) 
         actual_position = np.array(actual_position)
 
-        expected_position2 = [0,-115,600]
+        expected_position2 = [0,-142,450]
         actual_position2 = [0,y_received2,height_received2]
         expected_position2 = np.array(expected_position2)
         actual_position2 = np.array(actual_position2)
