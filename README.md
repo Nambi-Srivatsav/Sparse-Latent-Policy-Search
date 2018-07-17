@@ -36,7 +36,7 @@ python main.py
 It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distributions learned.
 
 
-In **configuration.py** 
+In **configuration.py** , please check the following variable
 
 ```python
 load_the_latest_state = True  ## Loads the checkpoint.npy
