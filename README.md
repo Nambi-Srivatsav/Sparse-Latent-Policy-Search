@@ -37,7 +37,7 @@ python main.py
 
 It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distributions learned.
 
-<br><br><br>
+<br><br><br><br>
 Configuration
 --------------------
 
