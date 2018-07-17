@@ -35,6 +35,11 @@ python main.py
 ```
 It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration.
 
-**configuration.py** has a parmeter called 'load_the_latest_state'. When it is set is True it loads the 'checkpoint.npy', when it is set to False. It starts
-training from the beginning.
+In **configuration.py** 
+
+```python
+load_the_latest_state = True  ## Loads the checkpoint.npy
+load_the_latest_state = False ## Does not load the saved state
+
+```
 
