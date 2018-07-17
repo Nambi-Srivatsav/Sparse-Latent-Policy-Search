@@ -9,27 +9,9 @@ import os
 
 from update_equations import *
 from get_samples import *
-
+from configuration import * 
     
 def GrouPS(*args,**kwargs):
-    
-    best_size=10
-    sample_size=20
-    number_of_groups=2
-    dimensions_per_group=np.array([7,7])
-    latent_dimension_size=6
-    orginial_feature_dimension_size=6
-    Time=10
-    max_iterations=100
-    max_inner_iterations=20
-    sigma2_M=100
-    anti_convergence_factor=1.5
-    tauA=1000
-    tauB=1000
-    alphaA=1
-    alphaB=1
-    initial_Tau= inv(np.array([10]).reshape(1,-1)**1.5)[0][0]
-    initial_Alpha=1
     
     Iterations_number=0
     Inner_iterations_number=0
@@ -52,12 +34,14 @@ def GrouPS(*args,**kwargs):
         initialM[m][0]=np.zeros([dimensions_per_group[m],orginial_feature_dimension_size])
     
     
-    
-    M = np.copy(initialM)
-    M = np.load('M.npy')
-    W = np.load('W.npy')
-    tau = np.load('tau.npy')
-    alpha = np.load('alpha.npy')
+    if(load_the_latest_state == True):
+        M = np.copy(initialM)
+        checkpoint = np.load('checkpoint.npy')
+        M = checkpoint[0]
+        W = checkpoint[1]
+        tau = checkpoint[2]
+        alpha = checkpoint[3]
+
     
     get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
     
@@ -194,20 +178,13 @@ def GrouPS(*args,**kwargs):
         Iterations_number=Iterations_number + 1
         check_if_converged=Iterations_number < max_iterations
         
-        
-        np.save('M.npy',M)
-        np.save('W.npy',W)
-        np.save('tau.npy',tau)
-        np.save('alpha.npy',alpha)
-        np.save('reward_over_time.npy',M)
-        
+
+        checkpoint = np.array([M,W,tau,alpha])
+        np.save('checkpoint.npy',checkpoint)
+
         if(Iterations_number%5 == 0):   
             os.mkdir(str(Iterations_number))
-            np.save('./'+str(Iterations_number)+'/M.npy',M)
-            np.save('./'+str(Iterations_number)+'/W.npy',W)
-            np.save('./'+str(Iterations_number)+'/tau.npy',tau)
-            np.save('./'+str(Iterations_number)+'/alpha.npy',alpha)
-            np.save('./'+str(Iterations_number)+'/reward_over_time.npy',M)
+            np.save('./'+str(Iterations_number)+'/checkpoint.npy',checkpoint)
             
         get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
 

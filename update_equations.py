@@ -135,8 +135,6 @@ def update_Z_Mean_and_Covariance(Best_samples_indices,Realization,M_temp,W_temp,
                 Z_temp[r][0][t][0]['Cov'] = np.copy(inv(inv(np.array(nenomm).reshape(1,-1))[0][0]*denomm))
                 mean=np.zeros([latent_dimension_size,1])
                 for m in range(0,number_of_groups):
-                    #dimmm = np.array([0,4,6,10,12])
-                    #dimmm = np.array([0,7])
                     aaa = Action[(sum(dimensions_per_group[:m])):(sum(dimensions_per_group[:m])+ dimensions_per_group[m] ),t]
                     aaa2 = ( aaa - np.dot(M_static_mean[m][0],Basis[:,t]))
                     aaa3 = (np.dot(W_static_mean[m][0].T,aaa2)) / (np.dot(Basis[:,t].T,Basis[:,t]))
