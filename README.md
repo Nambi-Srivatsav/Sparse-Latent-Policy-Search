@@ -5,7 +5,7 @@ Dependencies
 ------------
 
 - All code is written in Python 3.
-- Please install 'numpy' and 'scipy' libararies
+- Please install 'numpy' and 'scipy' libraries
 
 Description of files
 --------------------
@@ -33,7 +33,7 @@ Usage
 python main.py
 ```
 
-It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distrubtions learnt.
+It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distributions learned.
 
 
 In **configuration.py** 
