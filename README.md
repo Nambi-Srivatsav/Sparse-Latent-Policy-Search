@@ -1,13 +1,12 @@
 Sparse Latent Policy Search
 ==========
 
-
 Dependencies
 ------------
 
 - All code is written in Python 3.
 - Please install 'numpy' and 'scipy' libararies
-<br><br><br><br><br>
+
 Description of files
 --------------------
 
@@ -33,13 +32,15 @@ Usage
 ```python
 python main.py
 ```
-It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration.
+
+It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distrubtions learnt.
+
 
 In **configuration.py** 
 
 ```python
 load_the_latest_state = True  ## Loads the checkpoint.npy
 load_the_latest_state = False ## Does not load the saved state
-
 ```
 
+To begin training the task from scratch please set the above variable to false.
