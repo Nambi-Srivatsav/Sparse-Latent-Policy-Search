@@ -43,4 +43,4 @@ load_the_latest_state = True  ## Loads the checkpoint.npy
 load_the_latest_state = False ## Does not load the saved state
 ```
 
-To begin training the task from scratch please set the above variable to false.
+To begin training the task from start please set the above variable to false.
