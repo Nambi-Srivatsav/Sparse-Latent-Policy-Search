@@ -7,7 +7,7 @@ Dependencies
 ------------
 
 - All code is written in Python 3.
-- Please install 'numpy' and 'scipy' libraries
+- Please install 'numpy' and 'scipy' libraries.
 
 Description of files
 --------------------
@@ -16,8 +16,8 @@ Files that should NOT be edited:
 
 filename                          |  description
 ----------------------------------|------------------------------------------------------------------------------------
-main.py                           |  Starts the program and has GrouPS algorithm
-update_equations.py               |  Contains the update equations required by GrouPS algorithm
+main.py                           |  Starts the program and has GrouPS algorithm.
+update_equations.py               |  Contains the update equations required by GrouPS algorithm.
 
 Files that can be edited:
 
@@ -41,7 +41,7 @@ It loads up the simulator and starts the training. Displays Iteration deatails o
 Configuration
 --------------------
 
-In **configuration.py** , please check the following variable
+In **configuration.py** , please check the following variable.
 
 ```python
 load_the_latest_state = True  ## Loads the 'checkpoint.npy'
