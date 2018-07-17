@@ -33,9 +33,9 @@ def GrouPS(*args,**kwargs):
     for m in range(0,number_of_groups):
         initialM[m][0]=np.zeros([dimensions_per_group[m],orginial_feature_dimension_size])
     
-    
+    M = np.copy(initialM)
     if(load_the_latest_state == True):
-        M = np.copy(initialM)
+        
         checkpoint = np.load('checkpoint.npy')
         M = checkpoint[0]
         W = checkpoint[1]
