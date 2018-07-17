@@ -1,7 +1,7 @@
 GrouPS
 ==========
 
-GrouPS algorithm for latent space policy search. It combines reinforcement learning and dimensionality reduction, while also including prior structural knowledge about the task
+GrouPS algorithm for latent space policy search. It combines reinforcement learning and dimensionality reduction, while also including prior structural knowledge about the task.
 
 Dependencies
 ------------
@@ -37,7 +37,7 @@ python main.py
 
 It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distributions learned.
 
-
+<br><br>
 Configuration
 --------------------
 
