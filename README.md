@@ -1,5 +1,7 @@
-Sparse Latent Policy Search
+GrouPS
 ==========
+
+GrouPS algorithm for latent space policy search. It combines reinforcement learning and dimensionality reduction, while also including prior structural knowledge about the task
 
 Dependencies
 ------------
@@ -36,11 +38,14 @@ python main.py
 It loads up the simulator and starts the training. Displays Iteration deatails on the terminal. Stores 'checkpoint.npy' for every iteration. It contains the distributions learned.
 
 
+Configuration
+--------------------
+
 In **configuration.py** , please check the following variable
 
 ```python
-load_the_latest_state = True  ## Loads the checkpoint.npy
+load_the_latest_state = True  ## Loads the 'checkpoint.npy'
 load_the_latest_state = False ## Does not load the saved state
 ```
 
-To begin training the task from start please set the above variable to false.
+To begin training the task from the start please set the above variable to false.
