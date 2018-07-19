@@ -4,7 +4,7 @@ from numpy.linalg import inv
 best_size=10
 sample_size=20
 number_of_groups=2
-dimensions_per_group=np.array([7,7])
+dimensions_per_group=np.array([7,7]) 
 latent_dimension_size=6
 orginial_feature_dimension_size=6
 Time=10

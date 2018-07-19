@@ -49,8 +49,10 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
         
         CurrentAngle=Actions[:,t]
         
-
+        
+        
         try:
+            
             ssr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)       
             port = 55001               
             #ssr.connect(('192.168.125.1', port))
@@ -75,11 +77,11 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
                 writing_data = writing_main_data[i]            
                 for i in range(len(writing_data)):
                     #message = float(original_angles[i]) + CurrentAngle[i]/100
-                    message = CurrentAngle[i]/25
+                    message = CurrentAngle[i]/10
                     message = str(message)
                     message = message.encode('utf-8')
 
-                    message2 = CurrentAngle[i+7]/25
+                    message2 = CurrentAngle[i+7]/10
                     message2 = str(message2)
                     message2 = message2.encode('utf-8')
 
@@ -135,10 +137,6 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
         reward1 = max(norm(actual_position - expected_position,2),0)
         reward2 = max(norm(actual_position2 - expected_position2,2),0)
         reward[0][t] = reward1 + reward2
-    '''    
-    for i in range(Time): 
-        reward[0][i]=max(norm(actual_position - expected_position,2),0)
-    '''
         
     reward2=exp(- reward)
     reward = dot(np.ones(reward2.shape),sum(reward2))
