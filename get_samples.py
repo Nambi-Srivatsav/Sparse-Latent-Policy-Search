@@ -77,11 +77,11 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
                 writing_data = writing_main_data[i]            
                 for i in range(len(writing_data)):
                     #message = float(original_angles[i]) + CurrentAngle[i]/100
-                    message = CurrentAngle[i]/10
+                    message = CurrentAngle[i]/20
                     message = str(message)
                     message = message.encode('utf-8')
 
-                    message2 = CurrentAngle[i+7]/10
+                    message2 = CurrentAngle[i+7]/20
                     message2 = str(message2)
                     message2 = message2.encode('utf-8')
 
