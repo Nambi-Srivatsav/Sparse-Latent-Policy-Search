@@ -42,7 +42,7 @@ def GrouPS(*args,**kwargs):
         tau = checkpoint[2]
         alpha = checkpoint[3]
 
-    
+
     get_samples(W,M,tau,latent_dimension_size,dimensions_per_group,Time,rendering=1,nout=4)
     
     while check_if_converged:
@@ -62,7 +62,7 @@ def GrouPS(*args,**kwargs):
                 for t in range(0,Time):
                     Z_temp[r][0][t][0] = {'Mean':Zvals[:,t],'Cov':np.eye(latent_dimension_size)}
                     Z_temp[r][0][t][0]['Mean'] = Z_temp[r][0][t][0]['Mean'].reshape(1,-1) 
-                    
+                
         reward_tmp = np.empty([sample_size,1],dtype=object)
         
         for r in range(0,sample_size):
@@ -73,7 +73,6 @@ def GrouPS(*args,**kwargs):
         sum_of_rewards=0
         for r in Best_samples_indices.reshape(-1):
             sum_of_rewards=sum_of_rewards + np.sum(Realization[r][0]['Reward'])
-        
         
         ################## Initialize various distributions #######################
         

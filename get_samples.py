@@ -8,7 +8,7 @@ import time
 import math
 from datetime import datetime
 import socket
-    
+from configuration import *     
 
 def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Time=None,rendering=0,*args,**kwargs):
 
@@ -34,7 +34,6 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
     
     Z=np.random.randn(Latent,BasisDim)
     Actions=np.zeros([DoF,Time])
-    
     reward=np.zeros([1,Time])
      
     for t in arange(0,Time).reshape(-1):
@@ -56,13 +55,12 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
             ssr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)       
             port = 55001               
             #ssr.connect(('192.168.125.1', port))
-            ssr.connect(('127.0.0.1', port))
+            ssr.connect((ip_address, port))
 
             ssr2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)       
             port2 = 44000               
             #ssr2.connect(('192.168.125.1', port2))
-            ssr2.connect(('127.0.0.1', port2))
-            
+            ssr2.connect((ip_address, port2))
             # receive data from the server
             #print(ssr.recv(1024))
             #print(ssr2.recv(1024))
@@ -77,11 +75,11 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
                 writing_data = writing_main_data[i]            
                 for i in range(len(writing_data)):
                     #message = float(original_angles[i]) + CurrentAngle[i]/100
-                    message = CurrentAngle[i]/20
+                    message = CurrentAngle[i]/40
                     message = str(message)
                     message = message.encode('utf-8')
 
-                    message2 = CurrentAngle[i+7]/20
+                    message2 = CurrentAngle[i+7]/40
                     message2 = str(message2)
                     message2 = message2.encode('utf-8')
 
@@ -141,7 +139,6 @@ def get_samples(W=None,M=None,tau=None,Latent=None,dimensions_per_group=None,Tim
     reward2=exp(- reward)
     reward = dot(np.ones(reward2.shape),sum(reward2))
     Z=dot(Z,Basisfunctions)
-
     return Actions,Basisfunctions,reward,Z
     
 if __name__ == '__main__':
