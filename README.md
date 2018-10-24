@@ -1,7 +1,7 @@
 GrouPS
 ==========
 
-GrouPS algorithm for latent space policy search. It combines reinforcement learning and dimensionality reduction, while also including prior structural knowledge about the task.
+GrouPS algorithm - Implementation of [Sparse Latent Policy Search](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12275/11822). It combines reinforcement learning and dimensionality reduction, while also including prior structural knowledge about the task.
 
 Dependencies
 ------------
